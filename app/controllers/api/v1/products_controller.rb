@@ -5,7 +5,7 @@ module Api
         if params[:order_id].present?
           @products = Order.find(params[:order_id]).products
         else
-          @products = Product.in_stock.order(:cost)
+          @products = Product.in_stock
         end
 
         render json: @products

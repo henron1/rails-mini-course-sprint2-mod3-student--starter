@@ -7,8 +7,8 @@ class Product < ApplicationRecord
   has_many :orders through :order_products
   # @products = Product.where("inventory > ?", 0).order(:cost)
 
-  scope :in_stock, -> { where("inventory > ?", 0) }
-  scope :out_of_stock, -> { where("inventory < ?", 0) }
+  scope :in_stock, -> { where("inventory > ?", 0).order(:cost) }
+  scope :out_of_stock, -> { where("inventory < ?", 0).order(:cost) }
 
   def available?
     inventory > 0

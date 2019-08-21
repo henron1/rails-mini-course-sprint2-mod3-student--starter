@@ -5,7 +5,7 @@ module Api
         if params[:order_id].present?
           @products = Order.find(params[:order_id]).products
         else
-          @products = Product.where("inventory > ?", 0).order(:cost)
+          @products = Product.in_stock.order(:cost)
         end
 
         render json: @products
@@ -19,8 +19,7 @@ module Api
 
       def create
         @order = Order.find(params[:order_id])
-        @order_product = OrderProduct.build(order_id: @order.id, product_id: order_product_params[:product_id])
-
+        @order_product = @order.order_products.build(product_id: order_product_params[:product_id])
         if @order_product.save
           render json: @order, status: :created, location: api_v1_order_url(@order)
         else
